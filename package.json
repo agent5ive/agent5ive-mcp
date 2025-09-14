@@ -1,0 +1,24 @@
+{
+  "name": "agent5ive-mcp",
+  "version": "1.0.0",
+  "description": "An MCP server for Agent5ive, built with the official @modelcontextprotocol/sdk.",
+  "main": "index.js",
+  "bin": {
+    "agent5ive-mcp": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "agent5ive",
+    "mcp",
+    "sdk"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "axios": "^1.7.2",
+    "zod": "^3.23.8"
+  }
+}
