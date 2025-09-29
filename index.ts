@@ -25,7 +25,7 @@ function createServer() {
     "get_agent_purpose",
     {
       description: "Get the details and purpose of the deployed agent.",
-      inputSchema: z.object({}),
+      inputSchema: {},
     },
     async () => {
       if (!DEPLOYMENT_ID) {
@@ -44,7 +44,7 @@ function createServer() {
             },
           ],
         };
-      } catch (error) {
+      } catch (error: any) {
         return {
           content: [
             {
@@ -62,13 +62,13 @@ function createServer() {
     "interact_with_agent",
     {
       description: "Interact with the deployed agent.",
-      inputSchema: z.object({
+      inputSchema: {
         message: z.string().describe("The message to send to the agent."),
         history: z.array(z.object({
           role: z.enum(["user", "assistant"]),
           content: z.string(),
         })).optional().describe("The conversation history."),
-      }),
+      },
     },
     async ({ message, history = [] }) => {
       if (!DEPLOYMENT_ID) {
@@ -97,7 +97,7 @@ function createServer() {
             },
           ],
         };
-      } catch (error) {
+      } catch (error: any) {
         return {
           content: [
             {
@@ -132,10 +132,10 @@ async function main() {
     }));
     app.use(express.json());
 
-    app.all('/mcp', async (req, res) => {
+    app.all('/mcp', async (req: express.Request, res: express.Response) => {
       try {
         const server = createServer();
-        const transport = new StreamableHTTPServerTransport({});
+        const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
         res.on('close', () => {
           transport.close();
           server.close();
