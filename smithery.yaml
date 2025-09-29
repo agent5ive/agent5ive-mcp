@@ -1,0 +1,12 @@
+runtime: "container"
+startCommand:
+  type: "http"
+  configSchema:
+    type: "object"
+    properties:
+      DEPLOYMENT_ID:
+        type: "string"
+        description: "The deployment ID for the agent."
+    required: ["DEPLOYMENT_ID"]
+build:
+  dockerfile: "Dockerfile"
