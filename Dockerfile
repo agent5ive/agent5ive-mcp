@@ -1,18 +1,23 @@
-FROM node:18-alpine
-
+# ---- Base Image ----
+FROM node:18-alpine AS base
 WORKDIR /app
 
-# Copy package files
+# ---- Dependencies ----
+FROM base AS dependencies
 COPY package*.json ./
+RUN npm install
 
-# Install dependencies
-RUN npm install --omit=dev
-
-# Copy application code
+# ---- Build ----
+FROM dependencies AS build
 COPY . .
+RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 3000
+# ---- Production ----
+FROM base AS production
+ENV NODE_ENV=production
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY --from=build /app/dist ./dist
 
-# Run the server
-CMD ["node", "index.js", "--http"]
+EXPOSE 8081
+CMD ["node", "dist/index.js", "--http"]
