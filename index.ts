@@ -6,15 +6,11 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { z } from "zod";
 import axios from "axios";
 
-const { DEPLOYMENT_ID } = process.env;
 const API_BASE_URL = 'https://www.agent5ive.com/api/deployed-agents';
 
-if (!DEPLOYMENT_ID) {
-  console.error('Error: DEPLOYMENT_ID environment variable is not set.');
-  // process.exit(1); // Don't exit if not in HTTP mode
-}
-
-function createServer() {
+function createServer(deploymentId?: string) {
+  // Use provided deploymentId (from URL params in HTTP mode) or fall back to env var (for stdio mode)
+  const DEPLOYMENT_ID = deploymentId || process.env.DEPLOYMENT_ID;
   const server = new McpServer({
     name: "agent5ive-mcp-server",
     version: "1.0.0",
@@ -118,10 +114,6 @@ async function main() {
   const useHttp = process.argv.includes("--http");
 
   if (useHttp) {
-    if (!DEPLOYMENT_ID) {
-      console.error('Error: DEPLOYMENT_ID environment variable is not set for HTTP mode.');
-      process.exit(1);
-    }
     const app = express();
     const PORT = process.env.PORT || 8081;
 
@@ -134,7 +126,9 @@ async function main() {
 
     app.all('/mcp', async (req: express.Request, res: express.Response) => {
       try {
-        const server = createServer();
+        // Extract DEPLOYMENT_ID from URL query parameters (provided by Smithery config)
+        const deploymentId = req.query.DEPLOYMENT_ID as string | undefined;
+        const server = createServer(deploymentId);
         const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
         res.on('close', () => {
           transport.close();

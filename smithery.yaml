@@ -3,10 +3,11 @@ startCommand:
   type: "http"
   configSchema:
     type: "object"
+    required:
+      - DEPLOYMENT_ID
     properties:
       DEPLOYMENT_ID:
         type: "string"
-        description: "The deployment ID for the agent."
-    required: ["DEPLOYMENT_ID"]
+        description: "The deployment ID for the agent taken from agent5ive platform."
 build:
   dockerfile: "Dockerfile"
