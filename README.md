@@ -1,9 +1,20 @@
 # Agent5ive MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@agent5ive/agent5ive-mcp)](https://smithery.ai/server/@agent5ive/agent5ive-mcp)
+
 This package provides a Model Context Protocol (MCP) server for interacting with deployed Agent5ive agents. It allows you to connect your MCP-compatible clients (like Claude Desktop) to your Agent5ive agents to leverage their capabilities as tools.
 
 ## Installation
 
+### Installing via Smithery
+
+To install agent5ive-mcp automatically via [Smithery](https://smithery.ai/server/@agent5ive/agent5ive-mcp):
+
+```bash
+npx -y @smithery/cli install @agent5ive/agent5ive-mcp
+```
+
+### Manual Installation
 To use this MCP server, you can run it directly with `npx` or install it globally:
 
 ```bash
